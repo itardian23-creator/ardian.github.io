@@ -832,7 +832,6 @@
           <span class="body"><span class="tag" data-i18n="tag.aplikasi">Aplikasi</span><h3>Catatan Keuangan Keluarga — Transaksi</h3><p data-i18n="proj.16.d">Daftar transaksi bulanan dengan pencarian, filter, kategori, dompet, dan jumlah masuk/keluar.</p></span>
         </button>
       </div>
-      <div class="dbc-ui"><button type="button" class="dbc-btn" id="dbcPrev" aria-label="Sebelumnya">&#8249;</button><span class="dbc-count" id="dbcCount"></span><button type="button" class="dbc-btn" id="dbcNext" aria-label="Berikutnya">&#8250;</button></div>
       </div>
       <p class="note" style="text-align:center" data-i18n="proj.note">Klik gambar untuk memperbesar. Nama pasien dan nama staf lain pada tampilan sudah disamarkan.</p>
     </div>
@@ -1127,7 +1126,7 @@
 (function () {
   const stage = document.getElementById("dbc"); if (!stage) return;
   const cards = Array.from(stage.querySelectorAll(".proj")), N = cards.length;
-  const count = document.getElementById("dbcCount");
+  const count = document.getElementById("dbcCount") || { set innerHTML(v) {} };
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let pos = 0, target = 0, raf = 0, down = false, moved = false, sx = 0, spos = 0, vx = 0, lastX = 0, lastT = 0;
   const mod = (a) => ((a % N) + N) % N;
@@ -1200,9 +1199,7 @@
     if (e.key === "ArrowRight") { e.preventDefault(); go(Math.round(target) + 1); }
     if (e.key === "ArrowLeft")  { e.preventDefault(); go(Math.round(target) - 1); }
   });
-  document.getElementById("dbcPrev").addEventListener("click", () => go(Math.round(target) - 1));
-  document.getElementById("dbcNext").addEventListener("click", () => go(Math.round(target) + 1));
-  // putar otomatis pelan saat terlihat & tidak disentuh
+    // putar otomatis pelan saat terlihat & tidak disentuh
   let auto = null, hover = false;
   stage.addEventListener("pointerenter", () => hover = true); stage.addEventListener("pointerleave", () => hover = false);
   if (!reduce && "IntersectionObserver" in window) new IntersectionObserver((en) => {
