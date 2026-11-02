@@ -60,6 +60,7 @@
     pointer-events: none; z-index: 50; opacity: .05; mix-blend-mode: overlay;
     background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
   }
+  .shader-bg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; pointer-events: none; }
   .bg-grid-theme {
     position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
     background-size: 60px 60px;
@@ -199,6 +200,7 @@
   .ring-wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .progress-ring { transform: rotate(-90deg); transform-origin: center; stroke-dasharray: 402; stroke-dashoffset: 402; stroke-linecap: round; }
   .ring-text { text-align: center; z-index: 10; display: flex; flex-direction: column; align-items: center; }
+  .ring-hello { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; line-height: 1; opacity: 0; }
   .counter-val { font-size: 2.4rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
   .ring-text small { font-size: 8px; color: rgba(191,219,254,.55); text-transform: uppercase; letter-spacing: .1em; font-weight: 700; margin-top: 4px; }
   .widgets { display: grid; gap: 12px; }
@@ -592,7 +594,6 @@
   <a class="logo" href="#top">ardian<span>.</span>dev</a>
   <nav class="navlinks">
     <a href="#tentang" data-i18n="nav.tentang">Tentang</a>
-    <a href="#skill" data-i18n="nav.skill">Skill</a>
     <a href="#pendidikan" data-i18n="nav.pendidikan">Pendidikan</a>
     <a href="#pengalaman" data-i18n="nav.pengalaman">Pengalaman</a>
     <a href="#proyek" data-i18n="nav.proyek">Proyek</a>
@@ -608,7 +609,6 @@
     </button>
     <nav class="mmenu" id="mmenu" aria-label="Menu">
       <a href="#tentang" data-i18n="nav.tentang">Tentang</a>
-      <a href="#skill" data-i18n="nav.skill">Skill</a>
       <a href="#pendidikan" data-i18n="nav.pendidikan">Pendidikan</a>
       <a href="#pengalaman" data-i18n="nav.pengalaman">Pengalaman</a>
       <a href="#proyek" data-i18n="nav.proyek">Proyek</a>
@@ -619,6 +619,7 @@
 
 <!-- ======================= CINEMATIC HERO ======================= -->
 <div class="cine" id="cine">
+  <canvas class="shader-bg" id="shaderBg" aria-hidden="true"></canvas>
   <div class="film-grain" aria-hidden="true"></div>
   <div class="bg-grid-theme" aria-hidden="true"></div>
 
@@ -661,8 +662,7 @@
                       <circle class="progress-ring" cx="88" cy="88" r="64" fill="none" stroke="#3B82F6" stroke-width="12"/>
                     </svg>
                     <div class="ring-text">
-                      <span class="counter-val" id="counter">0.00</span>
-                      <small data-i18n="phone.gpa">IPK / 4.00</small>
+                      <span class="ring-hello">Hello</span>
                     </div>
                   </div>
 
@@ -712,7 +712,6 @@
         <p class="lead" data-i18n="about.p1">Saya lulusan Universitas Indraprasta PGRI, Program Studi S1 Teknik Informatika. Etos kerja saya disiplin, jujur, dan bertanggung jawab; hal-hal itu selalu saya utamakan dalam menyelesaikan pekerjaan.</p>
         <p class="lead" data-i18n="about.p2">Saya mampu bekerja secara individu maupun tim, memiliki kemampuan analisis dalam perencanaan yang baik, komunikatif, bersemangat untuk berkembang, mudah beradaptasi, dan tertarik mempelajari hal baru di bidang apa pun.</p>
         <div class="stats">
-          <div class="stat"><b>3.36</b><span data-i18n="stat.gpa">IPK dari 4.00</span></div>
           <div class="stat"><b>S1</b><span data-i18n="stat.major">Teknik Informatika</span></div>
           <div class="stat"><b>2023</b><span data-i18n="stat.year">Tahun lulus</span></div>
         </div>
@@ -720,30 +719,13 @@
     </div>
   </section>
 
-  <section class="s alt" id="skill">
-    <div class="wrap reveal">
-      <p class="eyebrow" data-i18n="eyebrow.kemampuan">Kemampuan</p>
-      <h2 data-i18n="title.skill" class="title">Skill</h2>
-      <div class="grid">
-        <div class="card skill"><span class="ico"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4Ij48cGF0aCBmaWxsPSJ1cmwoI2EpIiBkPSJNMCA2NGMwIDE4LjU5MyAyOC42NTQgMzMuNjY3IDY0IDMzLjY2NyAzNS4zNDYgMCA2NC0xNS4wNzQgNjQtMzMuNjY3IDAtMTguNTkzLTI4LjY1NS0zMy42NjctNjQtMzMuNjY3QzI4LjY1NCAzMC4zMzMgMCA0NS40MDcgMCA2NFoiLz48cGF0aCBmaWxsPSIjNzc3YmIzIiBkPSJNNjQgOTUuMTY3YzMzLjk2NSAwIDYxLjUtMTMuOTU1IDYxLjUtMzEuMTY3IDAtMTcuMjE0LTI3LjUzNS0zMS4xNjctNjEuNS0zMS4xNjdTMi41IDQ2Ljc4NiAyLjUgNjRjMCAxNy4yMTIgMjcuNTM1IDMxLjE2NyA2MS41IDMxLjE2N1oiLz48cGF0aCBkPSJNMzQuNzcyIDY3Ljg2NGMyLjc5MyAwIDQuODc3LS41MTUgNi4xOTYtMS41MyAxLjMwNi0xLjAwNiAyLjIwNy0yLjc0NyAyLjY4LTUuMTc1LjQ0LTIuMjcuMjcyLTMuODU0LS41LTQuNzEtLjc4OC0uODc0LTIuNDkzLTEuMzE3LTUuMDY3LTEuMzE3aC00LjQ2NGwtMi40NzMgMTIuNzMyek0yMC4xNzMgODMuNTQ3YS42OTQuNjk0IDAgMCAxLS42OC0uODI4bDYuNTU3LTMzLjczOGEuNjk1LjY5NSAwIDAgMSAuNjgtLjU2MWgxNC4xMzRjNC40NDIgMCA3Ljc0OCAxLjIwNiA5LjgyNyAzLjU4NSAyLjA4OCAyLjM5IDIuNzM0IDUuNzM0IDEuOTE3IDkuOTM1LS4zMzMgMS43MTEtLjkwNSAzLjMtMS43IDQuNzI0YTE1LjgxOCAxNS44MTggMCAwIDEtMy4xMjggMy45MmMtMS41MzEgMS40MzItMy4yNjQgMi40NzItNS4xNDcgMy4wODMtMS44NTIuNjA0LTQuMjMyLjkxLTcuMDcuOTFoLTUuNzI0bC0xLjYzNCA4LjQwOGEuNjk1LjY5NSAwIDAgMS0uNjgyLjU2MnoiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMzQuMTkgNTUuODI2aDMuODkxYzMuMTA3IDAgNC4xODYuNjgyIDQuNTUzIDEuMDg5LjYwNy42NzQuNzIzIDIuMDk3LjMzMSA0LjExMi0uNDM5IDIuMjU3LTEuMjUzIDMuODU4LTIuNDIgNC43NTYtMS4xOTQuOTItMy4xMzggMS4zODYtNS43NzMgMS4zODZoLTIuNzg2bDIuMjA1LTExLjM0MnptNi42NzQtOC4xSDI2LjczMWExLjM5IDEuMzkgMCAwIDAtMS4zNjQgMS4xMjNMMTguODEgODIuNTg4YTEuMzkgMS4zOSAwIDAgMCAxLjM2MyAxLjY1M2g3LjM1YTEuMzkgMS4zOSAwIDAgMCAxLjM2My0xLjEyNGwxLjUyNS03Ljg0Nmg1LjE1MWMyLjkxMiAwIDUuMzY0LS4zMTggNy4yODctLjk0NCAxLjk3Ny0uNjQyIDMuNzk2LTEuNzMxIDUuNDA2LTMuMjM3YTE2LjUyMiAxNi41MjIgMCAwIDAgMy4yNTktNC4wODdjLjgzMS0xLjQ4NyAxLjQyOS0zLjE0NyAxLjc3NS00LjkzMS44Ni00LjQyMy4xNjEtNy45NjQtMi4wNzYtMTAuNTI0LTIuMjE2LTIuNTM3LTUuNjk4LTMuODIzLTEwLjM0OS0zLjgyM3pNMzAuMzAxIDY4LjU1N2g0LjQ3MWMyLjk2MyAwIDUuMTctLjU1NyA2LjYyLTEuNjc1IDEuNDUxLTEuMTE2IDIuNDI4LTIuOTggMi45MzgtNS41OTEuNDg1LTIuNTA4LjI2NC00LjI3Ny0uNjY1LTUuMzA4LS45MzEtMS4wMy0yLjc5MS0xLjU0Ni01LjU4NC0xLjU0NmgtNS4wMzZsLTIuNzQzIDE0LjEybTEwLjU2My0xOS40NDVjNC4yNTIgMCA3LjM1MyAxLjExNyA5LjMwMyAzLjM0OCAxLjk1IDIuMjMyIDIuNTM2IDUuMzQ3IDEuNzYgOS4zNDYtLjMyMiAxLjY0OC0uODYzIDMuMTU0LTEuNjI1IDQuNTE4LS43NjQgMS4zNjYtMS43NiAyLjYxNC0yLjk5MSAzLjc0Ny0xLjQ2OCAxLjM3My0zLjA5NyAyLjM1Mi00Ljg5MiAyLjkzNS0xLjc5NC41ODQtNC4wOC44NzUtNi44NTcuODc1aC02LjI5NmwtMS43NDMgOC45N2gtNy4zNWw2LjU1OC0zMy43MzloMTQuMTMzIi8+PHBhdGggZD0iTTY5LjQ1OSA3NC41NzdhLjY5NC42OTQgMCAwIDEtLjY4Mi0uODI3bDIuOS0xNC45MjhjLjI3Ny0xLjQyLjIwOS0yLjQzOC0uMTktMi44Ny0uMjQ1LS4yNjMtLjk3OS0uNzA0LTMuMTUtLjcwNGgtNS4yNTZsLTMuNjQ2IDE4Ljc2OGEuNjk1LjY5NSAwIDAgMS0uNjgzLjU2aC03LjI5YS42OTUuNjk1IDAgMCAxLS42ODMtLjgyNmw2LjU1OC0zMy43MzlhLjY5NS42OTUgMCAwIDEgLjY4Mi0uNTYxaDcuMjlhLjY5NS42OTUgMCAwIDEgLjY4My44MjZMNjQuNDEgNDguNDJoNS42NTNjNC4zMDcgMCA3LjIyNy43NTggOC45MjggMi4zMjEgMS43MzMgMS41OTMgMi4yNzUgNC4xNCAxLjYwOCA3LjU3M2wtMy4wNTEgMTUuNzAyYS42OTUuNjk1IDAgMCAxLS42ODIuNTZoLTcuNDA3eiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik02NS4zMSAzOC43NTVoLTcuMjkxYTEuMzkgMS4zOSAwIDAgMC0xLjM2NCAxLjEyNGwtNi41NTcgMzMuNzM4YTEuMzkgMS4zOSAwIDAgMCAxLjM2MyAxLjY1NGg3LjI5MWExLjM5IDEuMzkgMCAwIDAgMS4zNjQtMS4xMjRsMy41MzctMTguMjA1aDQuNjgyYzIuMTY4IDAgMi42MjQuNDYzIDIuNjQxLjQ4NC4xMzIuMTQuMzA1Ljc5NS4wMTkgMi4yNjRsLTIuOSAxNC45MjdhMS4zOSAxLjM5IDAgMCAwIDEuMzY0IDEuNjU0aDcuNDA4YTEuMzkgMS4zOSAwIDAgMCAxLjM2My0xLjEyNGwzLjA1MS0xNS43Yy43MTUtMy42ODYuMTAzLTYuNDUtMS44Mi04LjIxNy0xLjgzNi0xLjY4Ni00LjkxLTIuNTA1LTkuMzk4LTIuNTA1aC00LjgxbDEuNDIxLTcuMzE1YTEuMzkgMS4zOSAwIDAgMC0xLjM2NC0xLjY1NXptMCAxLjM5LTEuNzQzIDguOTY4aDYuNDk2YzQuMDg3IDAgNi45MDcuNzE0IDguNDU3IDIuMTQgMS41NTMgMS40MjYgMi4wMTcgMy43MzUgMS4zOTggNi45M2wtMy4wNTIgMTUuNjk5aC03LjQwN2wyLjkwMS0xNC45MjhjLjMzLTEuNjk4LjIwOC0yLjg1Ni0uMzY1LTMuNDc0LS41NzMtLjYxNy0xLjc5My0uOTI2LTMuNjU4LS45MjZoLTUuODI5bC0zLjc1NiAxOS4zMjdINTEuNDZsNi41NTgtMzMuNzM5aDcuMjkyeiIvPjxwYXRoIGQ9Ik05Mi4xMzYgNjcuODY0YzIuNzkzIDAgNC44NzgtLjUxNSA2LjE5OC0xLjUzIDEuMzA0LTEuMDA2IDIuMjA2LTIuNzQ3IDIuNjc5LTUuMTc1LjQ0LTIuMjcuMjczLTMuODU0LS41LTQuNzEtLjc4OC0uODc0LTIuNDkzLTEuMzE3LTUuMDY3LTEuMzE3aC00LjQ2M2wtMi40NzUgMTIuNzMyek03Ny41NCA4My41NDdhLjY5NC42OTQgMCAwIDEtLjY4Mi0uODI4bDYuNTU3LTMzLjczOGEuNjk1LjY5NSAwIDAgMSAuNjgyLS41NjFIOTguMjNjNC40NDIgMCA3Ljc0OCAxLjIwNiA5LjgyNiAzLjU4NSAyLjA4OSAyLjM5IDIuNzM0IDUuNzM0IDEuOTE3IDkuOTM1YTE1Ljg3OCAxNS44NzggMCAwIDEtMS42OTkgNC43MjQgMTUuODM4IDE1LjgzOCAwIDAgMS0zLjEyOCAzLjkyYy0xLjUzIDEuNDMyLTMuMjY1IDIuNDcyLTUuMTQ3IDMuMDgzLTEuODUyLjYwNC00LjIzMi45MS03LjA3MS45MWgtNS43MjNsLTEuNjMzIDguNDA4YS42OTUuNjk1IDAgMCAxLS42ODMuNTYyeiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik05MS41NTUgNTUuODI2aDMuODkxYzMuMTA3IDAgNC4xODYuNjgyIDQuNTUyIDEuMDg5LjYxLjY3NC43MjQgMi4wOTcuMzMzIDQuMTEyLS40NCAyLjI1Ny0xLjI1NCAzLjg1OC0yLjQyMSA0Ljc1Ni0xLjE5NS45Mi0zLjEzOSAxLjM4Ni01Ljc3MyAxLjM4NmgtMi43ODZsMi4yMDQtMTEuMzQyem02LjY3NC04LjFIODQuMDk2YTEuMzkgMS4zOSAwIDAgMC0xLjM2MyAxLjEyM2wtNi41NTggMzMuNzM5YTEuMzkgMS4zOSAwIDAgMCAxLjM2NCAxLjY1M2g3LjM1YTEuMzkgMS4zOSAwIDAgMCAxLjM2My0xLjEyNGwxLjUyNS03Ljg0Nmg1LjE1YzIuOTExIDAgNS4zNjQtLjMxOCA3LjI4Ni0uOTQ0IDEuOTc4LS42NDIgMy43OTctMS43MzEgNS40MDgtMy4yMzhhMTYuNTIgMTYuNTIgMCAwIDAgMy4yNTgtNC4wODZjLjgzMi0xLjQ4NyAxLjQyOC0zLjE0NyAxLjc3NS00LjkzMS44Ni00LjQyMy4xNjItNy45NjQtMi4wNzYtMTAuNTI0LTIuMjE2LTIuNTM3LTUuNjk3LTMuODIzLTEwLjM1LTMuODIzek04Ny42NjYgNjguNTU3aDQuNDdjMi45NjQgMCA1LjE3LS41NTcgNi42MjItMS42NzUgMS40NS0xLjExNiAyLjQyOC0yLjk4IDIuOTM2LTUuNTkxLjQ4Ny0yLjUwOC4yNjYtNC4yNzctLjY2NS01LjMwOC0uOTMtMS4wMy0yLjc5MS0xLjU0Ni01LjU4My0xLjU0NmgtNS4wMzVabTEwLjU2My0xOS40NDVjNC4yNTEgMCA3LjM1NCAxLjExNyA5LjMwMyAzLjM0OCAxLjk1IDIuMjMyIDIuNTM3IDUuMzQ3IDEuNzU5IDkuMzQ2LS4zMiAxLjY0OC0uODYyIDMuMTU0LTEuNjI0IDQuNTE4LS43NjMgMS4zNjYtMS43NiAyLjYxNC0yLjk5MiAzLjc0Ny0xLjQ2NyAxLjM3My0zLjA5NyAyLjM1Mi00Ljg5MiAyLjkzNS0xLjc5My41ODQtNC4wNzguODc1LTYuODU2Ljg3NWgtNi4yOTVsLTEuNzQ1IDguOTdoLTcuMzVsNi41NTgtMzMuNzM5aDE0LjEzMyIvPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iYSIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDg0LjA0MTM2IDAgMCA4NC4wNDEzNiAzOC40MjYgNDIuMTY5KSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIHN0b3AtY29sb3I9IiNBRUIyRDUiLz48c3RvcCBvZmZzZXQ9Ii4zIiBzdG9wLWNvbG9yPSIjQUVCMkQ1Ii8+PHN0b3Agb2Zmc2V0PSIuNzUiIHN0b3AtY29sb3I9IiM0ODRDODkiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM0ODRDODkiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48L3N2Zz4KCg==" alt="Logo PHP"></span><h3>PHP</h3></div>
-        <div class="card skill"><span class="ico" aria-hidden="true">🛠️</span><h3>IT Support</h3></div>
-        <div class="card skill"><span class="ico"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4Ij48bGluZWFyR3JhZGllbnQgaWQ9InB5dGhvbi1vcmlnaW5hbC1hIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjcwLjI1MiIgeTE9IjEyMzcuNDc2IiB4Mj0iMTcwLjY1OSIgeTI9IjExNTEuMDg5IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KC41NjMgMCAwIC0uNTY4IC0yOS4yMTUgNzA3LjgxNykiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzVBOUZENCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzMwNjk5OCIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJweXRob24tb3JpZ2luYWwtYiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHgxPSIyMDkuNDc0IiB5MT0iMTA5OC44MTEiIHgyPSIxNzMuNjIiIHkyPSIxMTQ5LjUzNyIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCguNTYzIDAgMCAtLjU2OCAtMjkuMjE1IDcwNy44MTcpIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGRkQ0M0IiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGRkU4NzMiLz48L2xpbmVhckdyYWRpZW50PjxwYXRoIGZpbGw9InVybCgjcHl0aG9uLW9yaWdpbmFsLWEpIiBkPSJNNjMuMzkxIDEuOTg4Yy00LjIyMi4wMi04LjI1Mi4zNzktMTEuOCAxLjAwNy0xMC40NSAxLjg0Ni0xMi4zNDYgNS43MS0xMi4zNDYgMTIuODM3djkuNDExaDI0LjY5M3YzLjEzN0gyOS45NzdjLTcuMTc2IDAtMTMuNDYgNC4zMTMtMTUuNDI2IDEyLjUyMS0yLjI2OCA5LjQwNS0yLjM2OCAxNS4yNzUgMCAyNS4wOTYgMS43NTUgNy4zMTEgNS45NDcgMTIuNTE5IDEzLjEyNCAxMi41MTloOC40OTFWNjcuMjM0YzAtOC4xNTEgNy4wNTEtMTUuMzQgMTUuNDI2LTE1LjM0aDI0LjY2NWM2Ljg2NiAwIDEyLjM0Ni01LjY1NCAxMi4zNDYtMTIuNTQ4VjE1LjgzM2MwLTYuNjkzLTUuNjQ2LTExLjcyLTEyLjM0Ni0xMi44MzctNC4yNDQtLjcwNi04LjY0NS0xLjAyNy0xMi44NjYtMS4wMDh6TTUwLjAzNyA5LjU1N2MyLjU1IDAgNC42MzQgMi4xMTcgNC42MzQgNC43MjEgMCAyLjU5My0yLjA4MyA0LjY5LTQuNjM0IDQuNjktMi41NiAwLTQuNjMzLTIuMDk3LTQuNjMzLTQuNjktLjAwMS0yLjYwNCAyLjA3My00LjcyMSA0LjYzMy00LjcyMXoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgMTAuMjYpIi8+PHBhdGggZmlsbD0idXJsKCNweXRob24tb3JpZ2luYWwtYikiIGQ9Ik05MS42ODIgMjguMzh2MTAuOTY2YzAgOC41LTcuMjA4IDE1LjY1NS0xNS40MjYgMTUuNjU1SDUxLjU5MWMtNi43NTYgMC0xMi4zNDYgNS43ODMtMTIuMzQ2IDEyLjU0OXYyMy41MTVjMCA2LjY5MSA1LjgxOCAxMC42MjggMTIuMzQ2IDEyLjU0NyA3LjgxNiAyLjI5NyAxNS4zMTIgMi43MTMgMjQuNjY1IDAgNi4yMTYtMS44MDEgMTIuMzQ2LTUuNDIzIDEyLjM0Ni0xMi41NDd2LTkuNDEySDYzLjkzOHYtMy4xMzhoMzcuMDEyYzcuMTc2IDAgOS44NTItNS4wMDUgMTIuMzQ4LTEyLjUxOSAyLjU3OC03LjczNSAyLjQ2Ny0xNS4xNzQgMC0yNS4wOTYtMS43NzQtNy4xNDUtNS4xNjEtMTIuNTIxLTEyLjM0OC0xMi41MjFoLTkuMjY4ek03Ny44MDkgODcuOTI3YzIuNTYxIDAgNC42MzQgMi4wOTcgNC42MzQgNC42OTIgMCAyLjYwMi0yLjA3NCA0LjcxOS00LjYzNCA0LjcxOS0yLjU1IDAtNC42MzMtMi4xMTctNC42MzMtNC43MTkgMC0yLjU5NSAyLjA4My00LjY5MiA0LjYzMy00LjY5MnoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgMTAuMjYpIi8+PHJhZGlhbEdyYWRpZW50IGlkPSJweXRob24tb3JpZ2luYWwtYyIgY3g9IjE4MjUuNjc4IiBjeT0iNDQ0LjQ1IiByPSIyNi43NDMiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMCAtLjI0IC0xLjA1NSAwIDUzMi45NzkgNTU3LjU3NikiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNCOEI4QjgiIHN0b3Atb3BhY2l0eT0iLjQ5OCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzdGN0Y3RiIgc3RvcC1vcGFjaXR5PSIwIi8+PC9yYWRpYWxHcmFkaWVudD48cGF0aCBvcGFjaXR5PSIuNDQ0IiBmaWxsPSJ1cmwoI3B5dGhvbi1vcmlnaW5hbC1jKSIgZD0iTTk3LjMwOSAxMTkuNTk3YzAgMy41NDMtMTQuODE2IDYuNDE2LTMzLjA5MSA2LjQxNi0xOC4yNzYgMC0zMy4wOTItMi44NzMtMzMuMDkyLTYuNDE2IDAtMy41NDQgMTQuODE1LTYuNDE3IDMzLjA5Mi02LjQxNyAxOC4yNzUgMCAzMy4wOTEgMi44NzIgMzMuMDkxIDYuNDE3eiIvPjwvc3ZnPgo=" alt="Logo Python"></span><h3>Python</h3></div>
-        <div class="card skill"><span class="ico"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4Ij48cGF0aCBmaWxsPSIjMDA3NEJEIiBkPSJNNDcuNjE3IDk4LjEycy00Ljc2NyAyLjc3NCAzLjM5NyAzLjcxYzkuODkyIDEuMTMgMTQuOTQ3Ljk2OCAyNS44NDUtMS4wOTIgMCAwIDIuODcxIDEuNzk1IDYuODczIDMuMzUxLTI0LjQzOSAxMC40Ny01NS4zMDgtLjYwNy0zNi4xMTUtNS45Njl6bS0yLjk4OC0xMy42NjVzLTUuMzQ4IDMuOTU5IDIuODIzIDQuODA1YzEwLjU2NyAxLjA5MSAxOC45MSAxLjE4IDMzLjM1NC0xLjYgMCAwIDEuOTkzIDIuMDI1IDUuMTMyIDMuMTMxLTI5LjU0MiA4LjY0LTYyLjQ0Ni42OC00MS4zMDktNi4zMzZ6Ii8+PHBhdGggZmlsbD0iI0VBMkQyRSIgZD0iTTY5LjgwMiA2MS4yNzFjNi4wMjUgNi45MzUtMS41OCAxMy4xNy0xLjU4IDEzLjE3czE1LjI4OS03Ljg5MSA4LjI2OS0xNy43NzdjLTYuNTU5LTkuMjE1LTExLjU4Ny0xMy43OTIgMTUuNjM1LTI5LjU4IDAgLjAwMS00Mi43MzEgMTAuNjctMjIuMzI0IDM0LjE4N3oiLz48cGF0aCBmaWxsPSIjMDA3NEJEIiBkPSJNMTAyLjEyMyAxMDguMjI5czMuNTI5IDIuOTEtMy44ODggNS4xNTljLTE0LjEwMiA0LjI3Mi01OC43MDYgNS41Ni03MS4wOTQuMTcxLTQuNDUxLTEuOTM4IDMuODk5LTQuNjI1IDYuNTI2LTUuMTkyIDIuNzM5LS41OTMgNC4zMDMtLjQ4NSA0LjMwMy0uNDg1LTQuOTUzLTMuNDg3LTMyLjAxMyA2Ljg1LTEzLjc0MyA5LjgxNSA0OS44MjEgOC4wNzYgOTAuODE3LTMuNjM3IDc3Ljg5Ni05LjQ2OHpNNDkuOTEyIDcwLjI5NHMtMjIuNjg2IDUuMzg5LTguMDMzIDcuMzQ4YzYuMTg4LjgyOCAxOC41MTguNjM4IDMwLjAxMS0uMzI2IDkuMzktLjc4OSAxOC44MTMtMi40NzQgMTguODEzLTIuNDc0cy0zLjMwOCAxLjQxOS01LjcwNCAzLjA1M2MtMjMuMDQyIDYuMDYxLTY3LjU0NCAzLjIzOC01NC43MzEtMi45NTggMTAuODMyLTUuMjM5IDE5LjY0NC00LjY0MyAxOS42NDQtNC42NDN6bTQwLjY5NyAyMi43NDdjMjMuNDIxLTEyLjE2NyAxMi41OTEtMjMuODYgNS4wMzItMjIuMjg1LTEuODQ4LjM4NS0yLjY3Ny43Mi0yLjY3Ny43MnMuNjg4LTEuMDc5IDItMS41NDNjMTQuOTUzLTUuMjU1IDI2LjQ1MSAxNS41MDMtNC44MjMgMjMuNzI1IDAtLjAwMi4zNTktLjMyNy40NjgtLjYxN3oiLz48cGF0aCBmaWxsPSIjRUEyRDJFIiBkPSJNNzYuNDkxIDEuNTg3Uzg5LjQ1OSAxNC41NjMgNjQuMTg4IDM0LjUxYy0yMC4yNjYgMTYuMDA2LTQuNjIxIDI1LjEzLS4wMDcgMzUuNTU5LTExLjgzMS0xMC42NzMtMjAuNTA5LTIwLjA3LTE0LjY4OC0yOC44MTVDNTguMDQxIDI4LjQyIDgxLjcyMiAyMi4xOTUgNzYuNDkxIDEuNTg3eiIvPjxwYXRoIGZpbGw9IiMwMDc0QkQiIGQ9Ik01Mi4yMTQgMTI2LjAyMWMyMi40NzYgMS40MzcgNTctLjggNTcuODE3LTExLjQzNiAwIDAtMS41NzEgNC4wMzItMTguNTc3IDcuMjMxLTE5LjE4NiAzLjYxMi00Mi44NTQgMy4xOTEtNTYuODg3Ljg3NCAwIC4wMDEgMi44NzUgMi4zODEgMTcuNjQ3IDMuMzMxeiIvPjwvc3ZnPg==" alt="Logo Java"></span><h3>Java</h3></div>
-        <div class="card skill"><span class="ico" aria-hidden="true">🎧</span><h3>IT Helpdesk</h3></div>
-        <div class="card skill"><span class="ico" aria-hidden="true">🏥</span><h3 data-i18n="skill.med">IT Medis</h3></div>
-        <div class="card skill"><span class="ico" aria-hidden="true">📋</span><h3>IT Project</h3></div>
-        <div class="card skill"><span class="ico" aria-hidden="true">🤖</span><h3>AI Project</h3></div>
-        <div class="card skill"><span class="ico" aria-hidden="true">🧠</span><h3>AI</h3></div>
-      </div>
-    </div>
-  </section>
 
   <section class="s" id="pendidikan">
     <div class="wrap reveal">
       <p class="eyebrow" data-i18n="eyebrow.pendidikan">Pendidikan</p>
       <h2 data-i18n="title.edu" class="title">Riwayat pendidikan</h2>
       <div class="timeline">
-        <div class="tl"><span class="when">2019 – 2023</span><h3>Universitas Indraprasta PGRI</h3><p data-i18n="edu.1">Program Studi S1 Teknik Informatika · IPK 3.36 / 4.00</p></div>
+        <div class="tl"><span class="when">2019 – 2023</span><h3>Universitas Indraprasta PGRI</h3><p data-i18n="edu.1">Program Studi S1 Teknik Informatika</p></div>
         <div class="tl"><span class="when">2016 – 2019</span><h3>SMK Islam Al Muhajirin Depok</h3><p data-i18n="edu.2">Teknik Komputer dan Jaringan</p></div>
       </div>
     </div>
@@ -895,7 +877,7 @@
     "about.alt": "Photo of Ardian Nur Hilal",
     "stat.gpa": "GPA out of 4.00", "stat.major": "Informatics Engineering", "stat.year": "Year of graduation",
     "skill.med": "Healthcare IT",
-    "edu.1": "Bachelor's Program in Informatics Engineering · GPA 3.36 / 4.00",
+    "edu.1": "Bachelor's Program in Informatics Engineering",
     "edu.2": "Computer and Network Engineering",
     "exp.kemendagri": "Ministry of Home Affairs of the Republic of Indonesia",
     "exp.bpsdm": "Human Resources Development Agency",
@@ -1037,7 +1019,6 @@
   const root = document.getElementById("cine");
   const mainCard = document.getElementById("mainCard");
   const mockup = document.getElementById("mockup");
-  const counter = document.getElementById("counter");
   const IPK = 3.36, IPK_MAX = 4;
   const RING = 402; // keliling lingkaran r=64
   let raf = 0, ctx;
@@ -1075,15 +1056,15 @@
         scrollTrigger: { trigger: root, start: "top top", end: isMobile ? "+=1300" : "+=1700", pin: true, scrub: 0.3, anticipatePin: 1 },
       });
       tl
-        .to([".hero-text-wrapper", ".bg-grid-theme"], { scale: 1.15, filter: "blur(20px)", opacity: 0.2, ease: "power2.inOut", duration: 1.1 }, 0)
+        .to([".hero-text-wrapper", ".bg-grid-theme", ".shader-bg"], { scale: 1.15, filter: "blur(20px)", opacity: 0.2, ease: "power2.inOut", duration: 1.1 }, 0)
         .to(".main-card", { y: 0, ease: "power3.out", duration: 1.0 }, 0)
         .to(".main-card", { width: "100%", height: "100%", borderRadius: "0px", ease: "power3.inOut", duration: 0.8 }, 0.5)
         .fromTo(".mockup-scroll-wrapper",
           { y: 120, z: -300, rotationX: 30, rotationY: -20, autoAlpha: 0, scale: 0.8 },
           { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: "power3.out", duration: 0.9 }, 0.1)
         .fromTo(".phone-widget", { y: 24, autoAlpha: 0, scale: 0.97 }, { y: 0, autoAlpha: 1, scale: 1, stagger: 0.07, ease: "power2.out", duration: 0.6 }, 0.2)
-        .to(".progress-ring", { strokeDashoffset: RING * (1 - IPK / IPK_MAX), duration: 1.0, ease: "power3.out" }, 0.4)
-        .to(val, { v: IPK, duration: 1.0, ease: "power3.out", onUpdate: () => { counter.textContent = val.v.toFixed(2); } }, 0.4)
+        .to(".progress-ring", { strokeDashoffset: 0, duration: 1.0, ease: "power3.out" }, 0.4)
+        .fromTo(".ring-hello", { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, ease: "back.out(1.6)", duration: 0.5 }, 1.4)
         .fromTo(".floating-badge", { y: 50, autoAlpha: 0, scale: 0.8 }, { y: 0, autoAlpha: 1, scale: 1, ease: "back.out(1.4)", duration: 0.7, stagger: 0.1 }, 0.35)
         .fromTo(".card-left-text", { x: -30, autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: "power3.out", duration: 0.7 }, 0.25)
         .fromTo(".card-right-text", { x: 30, autoAlpha: 0, scale: 0.9 }, { x: 0, autoAlpha: 1, scale: 1, ease: "power3.out", duration: 0.7 }, 0.25)
@@ -1109,7 +1090,7 @@
     t = setTimeout(() => {
       if (window.innerWidth === w) return;
       w = window.innerWidth;
-      ctx.revert(); counter.textContent = "0.00"; build(); ScrollTrigger.refresh();
+      ctx.revert(); build(); ScrollTrigger.refresh();
     }, 250);
   });
 })();
@@ -1268,6 +1249,74 @@
   }
   ["pointerdown", "keydown", "touchstart"].forEach((t) => window.addEventListener(t, first, true));
   a.addEventListener("error", () => { b.style.display = "none"; });
+})();
+</script>
+<script>
+/* Animated shader background (WebGL) untuk hero */
+(function () {
+  var cv = document.getElementById('shaderBg');
+  if (!cv) return;
+  var gl = cv.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'low-power' });
+  if (!gl) return;
+  var vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var fs = [
+    'precision mediump float;',
+    'uniform vec2 uR;uniform float uT;uniform float uDark;',
+    'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+    'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);',
+    ' return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}',
+    'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p=p*2.02+vec2(1.7,9.2);a*=.5;}return v;}',
+    'void main(){',
+    ' vec2 uv=gl_FragCoord.xy/uR;vec2 p=(gl_FragCoord.xy-.5*uR)/min(uR.x,uR.y);',
+    ' float t=uT*.08;',
+    ' vec2 q=vec2(fbm(p*1.6+t),fbm(p*1.6+vec2(5.2,1.3)-t));',
+    ' vec2 r=vec2(fbm(p*1.8+3.*q+vec2(1.7,9.2)+t*1.4),fbm(p*1.8+3.*q+vec2(8.3,2.8)-t*1.2));',
+    ' float f=fbm(p*1.5+3.5*r);',
+    ' vec3 c1=vec3(.15,.39,.92),c2=vec3(.31,.27,.90),c3=vec3(.02,.71,.83);',
+    ' vec3 col=mix(c1,c2,smoothstep(.2,.8,f));col=mix(col,c3,smoothstep(.45,1.,length(q)*.9));',
+    ' vec3 base=mix(vec3(1.),vec3(.027,.043,.086),uDark);',
+    ' float k=mix(.34,.62,uDark)*smoothstep(.15,.85,f);',
+    ' vec3 o=mix(base,col,k);',
+    ' float vg=smoothstep(1.25,.25,length(uv-.5)*1.4);',
+    ' o=mix(base,o,.35+.65*vg);',
+    ' gl_FragColor=vec4(o,1.);}'
+  ].join('\n');
+  function sh(t, src) { var s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); return s; }
+  var pr = gl.createProgram();
+  gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs));
+  gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(pr);
+  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return;
+  gl.useProgram(pr);
+  var b = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, b);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,3,-1,-1,3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(pr, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  var uR = gl.getUniformLocation(pr, 'uR'), uT = gl.getUniformLocation(pr, 'uT'), uD = gl.getUniformLocation(pr, 'uDark');
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var visible = true, raf = 0, t0 = performance.now();
+  function size() {
+    var d = Math.min(window.devicePixelRatio || 1, 1) * .6; /* render murah, di-upscale */
+    var w = Math.max(2, Math.round(cv.clientWidth * d)), h = Math.max(2, Math.round(cv.clientHeight * d));
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; gl.viewport(0, 0, w, h); }
+  }
+  function draw(now) {
+    size();
+    gl.uniform2f(uR, cv.width, cv.height);
+    gl.uniform1f(uT, (now - t0) / 1000);
+    gl.uniform1f(uD, mq.matches ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  function loop(now) { raf = 0; if (!visible || document.hidden) return; draw(now); if (!rm.matches) raf = requestAnimationFrame(loop); }
+  function kick() { if (!raf) raf = requestAnimationFrame(loop); }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; kick(); }).observe(cv);
+  document.addEventListener('visibilitychange', kick);
+  window.addEventListener('resize', function () { draw(performance.now()); });
+  if (mq.addEventListener) mq.addEventListener('change', function () { draw(performance.now()); });
+  kick();
 })();
 </script>
 </body>
