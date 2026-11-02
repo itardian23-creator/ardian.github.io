@@ -72,11 +72,13 @@
   }
   .text-3d-matte {
     color: var(--color-foreground);
-    text-shadow: 0 10px 30px color-mix(in srgb, var(--color-foreground) 20%, transparent),
-                 0 2px 4px color-mix(in srgb, var(--color-foreground) 10%, transparent);
+    font-weight: 800;
+    -webkit-text-stroke: .6px var(--color-foreground);
+    text-shadow: 0 12px 34px color-mix(in srgb, var(--color-foreground) 28%, transparent),
+                 0 3px 6px color-mix(in srgb, var(--color-foreground) 22%, transparent);
   }
   .text-silver-matte {
-    background: linear-gradient(180deg, var(--color-foreground) 0%, color-mix(in srgb, var(--color-foreground) 40%, transparent) 100%);
+    background: linear-gradient(180deg, var(--color-foreground) 0%, color-mix(in srgb, var(--color-foreground) 78%, transparent) 100%);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     transform: translateZ(0);
     filter: drop-shadow(0 10px 20px color-mix(in srgb, var(--color-foreground) 15%, transparent))
@@ -96,7 +98,7 @@
   }
   .hero-text-wrapper { transform-style: preserve-3d; }
   .hero-text-wrapper h1 { font-size: clamp(2.6rem, 8.2vw, 6rem); line-height: 1.05; }
-  .text-track { font-weight: 700; letter-spacing: -.025em; margin-bottom: 8px; }
+  .text-track { font-weight: 800; letter-spacing: -.025em; margin-bottom: 8px; }
   .text-days { font-weight: 800; letter-spacing: -.045em; padding-bottom: .08em; }
   .cta-wrapper { pointer-events: auto; }
   .cta-wrapper h2 { font-size: clamp(2.4rem, 7vw, 4.6rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 20px; }
@@ -1056,7 +1058,7 @@
         scrollTrigger: { trigger: root, start: "top top", end: isMobile ? "+=1300" : "+=1700", pin: true, scrub: 0.3, anticipatePin: 1 },
       });
       tl
-        .to([".hero-text-wrapper", ".bg-grid-theme", ".shader-bg"], { scale: 1.15, filter: "blur(20px)", opacity: 0.2, ease: "power2.inOut", duration: 1.1 }, 0)
+        .to([".hero-text-wrapper", ".bg-grid-theme", ".shader-bg"], { scale: 1.15, filter: "blur(8px)", opacity: 0.45, ease: "power2.inOut", duration: 1.1 }, 0)
         .to(".main-card", { y: 0, ease: "power3.out", duration: 1.0 }, 0)
         .to(".main-card", { width: "100%", height: "100%", borderRadius: "0px", ease: "power3.inOut", duration: 0.8 }, 0.5)
         .fromTo(".mockup-scroll-wrapper",
