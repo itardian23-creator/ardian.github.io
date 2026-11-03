@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#070b16" media="(prefers-color-scheme: dark)">
 <script>document.documentElement.className+=" js";</script>
 <title>Ardian Nur Hilal — Portofolio</title>
 <meta name="description" content="Portofolio Ardian Nur Hilal, lulusan S1 Teknik Informatika Universitas Indraprasta PGRI.">
 <style>
   :root {
-    color-scheme: dark;
+    color-scheme: light dark;
     --bg: #ffffff;
     --bg-alt: #f5f7fb;
     --fg: #0b1220;
@@ -450,7 +451,7 @@
   .ring-track { stroke: rgba(15,23,42,.08); }
 
   /* ================= TEMA GELAP (otomatis mengikuti sistem) ================= */
-  @media all {
+  @media (prefers-color-scheme: dark) {
     :root {
       --bg: #070b16; --bg-alt: #0b1120; --fg: #e8edf7; --muted: #97a3ba;
       --line: rgba(255,255,255,.10); --card: #0f172a; --accent: #60a5fa; --accent2: #818cf8;
@@ -585,12 +586,12 @@
   .music-btn.on .eq i:nth-child(2) { animation-delay: -.3s; } .music-btn.on .eq i:nth-child(3) { animation-delay: -.6s; }
   @keyframes eq { 0%,100% { height: 25%; } 50% { height: 100%; } }
   @media (prefers-reduced-motion: reduce) { .music-btn.on .eq i { animation: none; height: 70%; } }
-  @media all { .music-btn { background: rgba(15,23,42,.8); color: #e6ecf8; } }
+  @media (prefers-color-scheme: dark) { .music-btn { background: rgba(15,23,42,.8); color: #e6ecf8; } }
   @media (max-width: 760px) { .music-btn .lbl { display: none; } .music-btn { padding: 12px; } }
   /* latar marmer di seluruh halaman */
   section.s { background: transparent; }
-  section.s.alt { background: rgba(7,11,22,.38); }
-  footer { background: rgba(7,11,22,.38); }
+  section.s.alt, footer { background: rgba(245,247,251,.45); }
+  @media (prefers-color-scheme: dark) { section.s.alt, footer { background: rgba(7,11,22,.38); } }
 </style>
 </head>
 <body>
@@ -1324,7 +1325,7 @@
     size();
     gl.uniform2f(uR, cv.width, cv.height);
     gl.uniform1f(uT, (now - t0) / 1000);
-    gl.uniform1f(uD, 1);
+    gl.uniform1f(uD, mq.matches ? 1 : 0);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
   function loop(now) { raf = 0; if (!visible || document.hidden) return; draw(now); if (!rm.matches) raf = requestAnimationFrame(loop); }
