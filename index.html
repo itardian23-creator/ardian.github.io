@@ -400,16 +400,74 @@
   /* Menu titik tiga (HP) */
   .menu-wrap { display: none; position: relative; }
   @media (max-width: 760px) { .menu-wrap { display: block; } }
-  .menu-btn { width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.85);
-    color: var(--fg); display: grid; place-items: center; cursor: pointer; box-shadow: 0 6px 20px -10px rgba(15,23,42,.25);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); -webkit-tap-highlight-color: transparent; }
+  .lang { position: relative; z-index: 2; }
+  .menu-btn { position: relative; z-index: 3; width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--line);
+    background: rgba(255,255,255,.85); color: var(--fg); display: grid; place-items: center; cursor: pointer;
+    box-shadow: 0 6px 20px -10px rgba(15,23,42,.25);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); -webkit-tap-highlight-color: transparent;
+    transition: background .35s, color .35s, border-color .35s, transform .35s cubic-bezier(.25,1,.5,1); }
+  .menu-btn:active { transform: scale(.94); }
   .menu-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .mmenu { position: absolute; top: calc(100% + 8px); right: 0; min-width: 200px; padding: 8px; border-radius: 18px;
-    background: #fff; border: 1px solid var(--line); box-shadow: 0 24px 48px -16px rgba(15,23,42,.35);
-    display: none; flex-direction: column; gap: 2px; }
-  .mmenu.open { display: flex; }
-  .mmenu a { padding: 12px 14px; border-radius: 12px; color: var(--fg); font-size: .98rem; font-weight: 500; }
-  .mmenu a:hover, .mmenu a:active { background: #f1f5f9; }
+  /* Titik tiga -> X */
+  .menu-btn svg { overflow: visible; transition: transform .6s cubic-bezier(.65,0,.35,1); }
+  .menu-btn .dots circle { transform-box: fill-box; transform-origin: center; transition: transform .45s cubic-bezier(.65,0,.35,1), opacity .25s; }
+  .menu-btn .x line { stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset .4s cubic-bezier(.65,0,.35,1); }
+  .menu-btn[aria-expanded="true"] { background: var(--accent); color: #fff; border-color: transparent; }
+  .menu-btn[aria-expanded="true"] svg { transform: rotate(90deg); }
+  .menu-btn[aria-expanded="true"] .dots circle { opacity: 0; transform: scale(0); }
+  .menu-btn[aria-expanded="true"] .dots circle:nth-child(1) { transform: translateY(7px) scale(0); }
+  .menu-btn[aria-expanded="true"] .dots circle:nth-child(3) { transform: translateY(-7px) scale(0); }
+  .menu-btn[aria-expanded="true"] .x line { stroke-dashoffset: 0; transition-delay: .18s; }
+  .menu-btn[aria-expanded="true"] .x line + line { transition-delay: .26s; }
+
+  /* Menu layar penuh (circular reveal dari tombol) */
+  html.mm-lock, html.mm-lock body { overflow: hidden; }
+  .mmenu { --mm-bg: #ffffff; --mm-fg: var(--fg); --mm-muted: #64748b; --mm-line: rgba(15,23,42,.12);
+    position: fixed; inset: 0; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 32px;
+    padding: calc(96px + env(safe-area-inset-top, 0px)) clamp(24px, 7vw, 56px) calc(84px + env(safe-area-inset-bottom, 0px));
+    background: var(--mm-bg); color: var(--mm-fg); overflow-y: auto; overscroll-behavior: contain;
+    clip-path: circle(0px at var(--mx, calc(100% - 38px)) var(--my, 36px));
+    visibility: hidden; pointer-events: none;
+    transition: clip-path .75s cubic-bezier(.76,0,.24,1), visibility 0s linear .75s; }
+  .mmenu::before { content: ""; position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 42% at 88% 0%, rgba(37,99,235,.16), transparent 70%),
+                radial-gradient(55% 40% at 0% 100%, rgba(79,70,229,.12), transparent 70%); }
+  .mmenu.open { clip-path: circle(150vmax at var(--mx, calc(100% - 38px)) var(--my, 36px));
+    visibility: visible; pointer-events: auto;
+    transition: clip-path .9s cubic-bezier(.76,0,.24,1), visibility 0s; }
+  .mm-list { position: relative; list-style: none; margin: auto 0; display: flex; flex-direction: column; gap: 4px; }
+  .mm-list a { display: block; width: fit-content; padding: 4px 0; color: var(--mm-fg);
+    font-size: clamp(2.4rem, 12.5vw, 4.2rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.1;
+    transition: opacity .3s, transform .45s cubic-bezier(.25,1,.5,1), color .3s; }
+  .mm-list a:focus-visible, .mm-sec a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+  .mm-foot { position: relative; padding-top: 22px; border-top: 1px solid var(--mm-line); }
+  .mm-note { color: var(--mm-muted); font-size: .95rem; max-width: 28rem; margin-bottom: 16px; }
+  .mm-sec { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+  .mm-sec a { position: relative; padding-bottom: 3px; color: var(--mm-fg); font-size: .95rem; font-weight: 600; }
+  .mm-sec a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: currentColor;
+    transform: scaleX(0); transform-origin: right; transition: transform .45s cubic-bezier(.65,0,.35,1); }
+  .mm-sec a:hover::after, .mm-sec a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+  @media (hover: none) { .mm-sec a::after { transform: scaleX(1); opacity: .35; } }
+  /* Link naik dari blur, satu per satu */
+  .mm-list li, .mm-foot > * { opacity: 0; transform: translateY(36px); filter: blur(12px);
+    transition: opacity .35s ease, transform .35s ease, filter .35s ease; }
+  .mmenu.open .mm-list li, .mmenu.open .mm-foot > * { opacity: 1; transform: none; filter: none;
+    transition: opacity .7s ease, transform .85s cubic-bezier(.16,1,.3,1), filter .7s ease;
+    transition-delay: calc(.3s + var(--i, 0) * .07s); }
+  .mmenu.open .mm-foot > * { transition-delay: calc(.3s + 5 * .07s + var(--i, 0) * .08s); }
+  /* Hover: link lain meredup, link yang disorot bergeser */
+  @media (hover: hover) {
+    .mm-list:hover a { opacity: .3; }
+    .mm-list a:hover, .mm-list a:focus-visible { opacity: 1; transform: translateX(10px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mmenu { clip-path: none; opacity: 0; transition: opacity .2s, visibility 0s linear .2s; }
+    .mmenu.open { clip-path: none; opacity: 1; transition: opacity .2s, visibility 0s; }
+    .mm-list li, .mm-foot > * { filter: none; transform: none; transition: none; }
+    .mmenu.open .mm-list li, .mmenu.open .mm-foot > * { transition: none; }
+    .menu-btn svg, .menu-btn .dots circle, .menu-btn .x line { transition: none; }
+    .mm-list a:hover, .mm-list a:focus-visible { transform: none; }
+  }
   /* Logo disembunyikan */
   .logo { display: none; }
   .topnav { justify-content: flex-end; }
@@ -527,8 +585,9 @@
     .lb button:hover { background: rgba(255,255,255,.18); }
 
     .menu-btn { background: rgba(15,23,42,.8); box-shadow: 0 6px 20px -10px rgba(0,0,0,.6); }
-    .mmenu { background: #0f172a; box-shadow: 0 24px 48px -16px rgba(0,0,0,.7); }
-    .mmenu a:hover, .mmenu a:active { background: rgba(255,255,255,.08); }
+    .mmenu { --mm-bg: #070b16; --mm-fg: #f1f5f9; --mm-muted: #94a3b8; --mm-line: rgba(255,255,255,.14); }
+    .mmenu::before { background: radial-gradient(60% 42% at 88% 0%, rgba(59,130,246,.22), transparent 70%),
+                                 radial-gradient(55% 40% at 0% 100%, rgba(99,102,241,.18), transparent 70%); }
   }
 
   /* ================= DEPTH BLUR CAROUSEL + LAYOUT FULL LEBAR ================= */
@@ -615,14 +674,27 @@
   </div>
   <div class="menu-wrap">
     <button type="button" class="menu-btn" id="menuBtn" aria-label="Buka menu" aria-expanded="false" aria-controls="mmenu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <g class="dots"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></g>
+        <g class="x" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6.5" y1="6.5" x2="17.5" y2="17.5"/><line x1="17.5" y1="6.5" x2="6.5" y2="17.5"/></g>
+      </svg>
     </button>
     <nav class="mmenu" id="mmenu" aria-label="Menu">
-      <a href="#tentang" data-i18n="nav.tentang">Tentang</a>
-      <a href="#pendidikan" data-i18n="nav.pendidikan">Pendidikan</a>
-      <a href="#pengalaman" data-i18n="nav.pengalaman">Pengalaman</a>
-      <a href="#proyek" data-i18n="nav.proyek">Proyek</a>
-      <a href="#kontak" data-i18n="nav.kontak">Kontak</a>
+      <ul class="mm-list">
+        <li style="--i:0"><a href="#tentang" data-i18n="nav.tentang">Tentang</a></li>
+        <li style="--i:1"><a href="#pendidikan" data-i18n="nav.pendidikan">Pendidikan</a></li>
+        <li style="--i:2"><a href="#pengalaman" data-i18n="nav.pengalaman">Pengalaman</a></li>
+        <li style="--i:3"><a href="#proyek" data-i18n="nav.proyek">Proyek</a></li>
+        <li style="--i:4"><a href="#kontak" data-i18n="nav.kontak">Kontak</a></li>
+      </ul>
+      <div class="mm-foot">
+        <p class="mm-note" style="--i:0" data-i18n="menu.note">Terbuka untuk peluang kerja dan kolaborasi.</p>
+        <div class="mm-sec" style="--i:1">
+          <a href="https://wa.me/6289677843543" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://id.linkedin.com/in/ardian-nur-hilal-a359bb2b9" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.instagram.com/ardianhl" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
     </nav>
   </div>
 </div>
@@ -928,7 +1000,8 @@
     "contact.lead": "Interested in working together or have a suitable job opening? Feel free to contact me.",
     "contact.email": "Send Email", "contact.cv": "Download CV", "contact.loc": "📍 Depok, West Java, Indonesia",
     "lb.dialog": "Program preview", "lb.close": "Close", "lb.prev": "Previous", "lb.next": "Next",
-    "menu.open": "Open menu", "menu.close": "Close menu"
+    "menu.open": "Open menu", "menu.close": "Close menu",
+    "menu.note": "Open to job opportunities and collaboration."
   };
   var TITLE_EN = "Ardian Nur Hilal — Portfolio";
   var DESC_EN = "Portfolio of Ardian Nur Hilal, a Bachelor's graduate in Informatics Engineering from Universitas Indraprasta PGRI.";
@@ -1244,12 +1317,29 @@
 (function () {
   const btn = document.getElementById("menuBtn"), menu = document.getElementById("mmenu");
   if (!btn || !menu) return;
-  function set(open) { menu.classList.toggle("open", open); btn.setAttribute("aria-expanded", open); btn.setAttribute("aria-label", open ? i18nT("menu.close", "Tutup menu") : i18nT("menu.open", "Buka menu")); }
-  btn.addEventListener("click", (e) => { e.stopPropagation(); set(!menu.classList.contains("open")); });
+  const root = document.documentElement, desktop = window.matchMedia("(min-width: 761px)");
+  const first = menu.querySelector("a");
+  function origin() {
+    const r = btn.getBoundingClientRect();
+    menu.style.setProperty("--mx", (r.left + r.width / 2) + "px");
+    menu.style.setProperty("--my", (r.top + r.height / 2) + "px");
+  }
+  function set(open, viaKeyboard) {
+    if (open === menu.classList.contains("open")) return;
+    if (open) origin();
+    menu.classList.toggle("open", open);
+    root.classList.toggle("mm-lock", open);
+    btn.setAttribute("aria-expanded", String(open));
+    btn.setAttribute("aria-label", open ? i18nT("menu.close", "Tutup menu") : i18nT("menu.open", "Buka menu"));
+    if (open && viaKeyboard && first) setTimeout(() => first.focus({ preventScroll: true }), 450);
+  }
+  btn.addEventListener("click", (e) => { e.stopPropagation(); set(!menu.classList.contains("open"), e.detail === 0); });
   menu.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });
-  document.addEventListener("click", (e) => { if (!menu.contains(e.target)) set(false); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") set(false); });
-  window.addEventListener("scroll", () => set(false), { passive: true });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && menu.classList.contains("open")) { set(false); btn.focus(); }
+  });
+  const onDesktop = () => { if (desktop.matches) set(false); };
+  if (desktop.addEventListener) desktop.addEventListener("change", onDesktop); else desktop.addListener(onDesktop);
 })();
 </script>
 <audio id="bgm" src="musik.mp3" loop preload="none"></audio>
